@@ -25,6 +25,14 @@ export enum Locale {
     JA = "ja",
 }
 
+/**
+ * @constructor
+ * @param endpoint Softbank API endpoint
+ * @param merchantId Softbank API merchant ID
+ * @param serviceId Softbank API service ID
+ * @param hashKey Softbank API hash key
+ * @param locale Softbank API locale
+ */
 export class SoftbankService {
     public endpoint: string;
     public merchantId: string;
@@ -43,15 +51,6 @@ export class SoftbankService {
         PURCHASE_REQUEST: "ST02-00201-101",
         REFUND_REQUEST: "ST02-00303-101",
     };
-
-    /**
-     *
-     * @param endpoint Softbank API endpoint
-     * @param merchantId Softbank API merchant ID
-     * @param serviceId Softbank API service ID
-     * @param hashKey Softbank API hash key
-     * @param locale Softbank API locale
-     */
     constructor(
         endpoint: string,
         merchantId: string,
@@ -66,6 +65,12 @@ export class SoftbankService {
         this.locale = locale;
     }
 
+    /**
+     * @function generateHashCode
+     * @memberof SoftbankService
+     * @param {string[]} args
+     * @returns string
+     */
     public generateHashCode(...args: string[]): string {
         return sha1(
             `${this.merchantId}${this.serviceId}${args.join("")}${this.hashKey}`

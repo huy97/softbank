@@ -1,4 +1,9 @@
-import { SoftbankResponse, SoftbankService, XMLFieldData } from "./softbank";
+import {
+    Locale,
+    SoftbankResponse,
+    SoftbankService,
+    XMLFieldData,
+} from "./softbank";
 
 export enum EncryptedFlag {
     NONE = "0",
@@ -49,26 +54,37 @@ export interface SoftbankTransactionResponse extends SoftbankResponse {
     res_process_date: XMLFieldData;
 }
 
+/**
+ * @constructor
+ * @param {string} endpoint Softbank API endpoint
+ * @param {string} merchantId Softbank API merchant ID
+ * @param {string} serviceId Softbank API service ID
+ * @param {string} hashKey Softbank API hash key
+ * @param {string} locale Softbank API locale
+ */
+
 export class SoftbankCreditCard extends SoftbankService {
     constructor(
         endpoint: string,
         merchantId: string,
         serviceId: string,
-        hashKey: string
+        hashKey: string,
+        locale: Locale = Locale.EN
     ) {
-        super(endpoint, merchantId, serviceId, hashKey);
+        super(endpoint, merchantId, serviceId, hashKey, locale);
     }
 
     /**
-     *
-     * @param isCreate true: create, false: update
-     * @param customerId is required and must be unique
-     * @param encryptedFlg is required
-     * @param requestDate format: YYYYMMddHHmmss
-     * @param ccNumber is required
-     * @param ccExpiration is required, format: YYYYMM
-     * @param securityCode
-     * @returns
+     * @function createUpdateCustomer
+     * @memberof SoftbankCreditCard
+     * @param {boolean} isCreate true: create, false: update
+     * @param {string} customerId is required and must be unique
+     * @param {string} encryptedFlg is required
+     * @param {string} requestDate format: YYYYMMddHHmmss
+     * @param {string} ccNumber is required
+     * @param {string} ccExpiration is required, format: YYYYMM
+     * @param {string} securityCode
+     * @returns {Promise<SoftbankTransactionResponse>}
      */
 
     async createUpdateCustomer(
@@ -117,16 +133,17 @@ export class SoftbankCreditCard extends SoftbankService {
     }
 
     /**
-     *
-     * @param isCreate mark true: create, false: update
-     * @param customerId is required and must be unique
-     * @param customerInfoReturnFlg is required
-     * @param encryptedFlg is required
-     * @param requestDate format: YYYYMMddHHmmss
-     * @param token generate from web client
-     * @param tokenKey generate from web client
-     * @param cardbrandReturnFlg is required
-     * @returns
+     * @function createUpdateCustomerWithToken
+     * @memberof SoftbankCreditCard
+     * @param {boolean} isCreate mark true: create, false: update
+     * @param {string} customerId is required and must be unique
+     * @param {string} customerInfoReturnFlg is required
+     * @param {EncryptedFlag} encryptedFlg is required
+     * @param {string} requestDate format: YYYYMMddHHmmss
+     * @param {string} token generate from web client
+     * @param {string} tokenKey generate from web client
+     * @param {CardBrandReturnFlag} cardbrandReturnFlg is required
+     * @returns {Promise<SoftbankTransactionResponse>}
      */
 
     async createUpdateCustomerWithToken(
@@ -178,14 +195,15 @@ export class SoftbankCreditCard extends SoftbankService {
     }
 
     /**
-     *
-     * @param customerId customerId of createUpdateCustomer or createUpdateCustomerWithToken
-     * @param customerReturnFlg is required
-     * @param responseInfoType is required
-     * @param cardbrandReturnFlg is required
-     * @param encryptedFlg is required
-     * @param requestDate format is YYYYMMDDHHmmss
-     * @returns
+     * @function getCustomer
+     * @memberof SoftbankCreditCard
+     * @param {string} customerId customerId of createUpdateCustomer or createUpdateCustomerWithToken
+     * @param {CustomerInfoReturnFlag} customerReturnFlg is required
+     * @param {ResponseInfoType} responseInfoType is required
+     * @param {CardBrandReturnFlag} cardbrandReturnFlg is required
+     * @param {EncryptedFlag} encryptedFlg is required
+     * @param {string} requestDate format is YYYYMMDDHHmmss
+     * @returns {Promise<SoftbankTransactionResponse>}
      */
 
     async getCustomer(
@@ -229,16 +247,17 @@ export class SoftbankCreditCard extends SoftbankService {
     }
 
     /**
-     *
-     * @param customerId customerId from createUpdateCustomer or createUpdateCustomerWithToken
-     * @param orderId is required
-     * @param itemId is required
-     * @param amount is required
-     * @param customerReturnFlg is required
-     * @param encryptedFlg is required
-     * @param requestDate format is YYYYMMDDHHmmss
-     * @param cardbrandReturnFlg is required
-     * @returns
+     * @function createTransaction
+     * @memberof SoftbankCreditCard
+     * @param {string} customerId customerId from createUpdateCustomer or createUpdateCustomerWithToken
+     * @param {string} orderId is required
+     * @param {string} itemId is required
+     * @param {string} amount is required
+     * @param {CustomerInfoReturnFlag} customerReturnFlg is required
+     * @param {EncryptedFlag} encryptedFlg is required
+     * @param {string} requestDate format is YYYYMMDDHHmmss
+     * @param {string} cardbrandReturnFlg is required
+     * @returns {Promise<SoftbankTransactionResponse>}
      */
 
     async createTransaction(
@@ -288,10 +307,12 @@ export class SoftbankCreditCard extends SoftbankService {
     }
 
     /**
-     *
-     * @param transactionId transactionId from createTransaction
-     * @param trackingId trackingId from createTransaction
-     * @param requestDate requestDate format YYYYMMDDHHmmss
+     * @function confirmTransaction
+     * @memberof SoftbankCreditCard
+     * @param {string} transactionId transactionId from createTransaction
+     * @param {string} trackingId trackingId from createTransaction
+     * @param {string} requestDate requestDate format YYYYMMDDHHmmss
+     * @returns {Promise<SoftbankTransactionResponse>}
      */
 
     async confirmTransaction(
@@ -324,11 +345,12 @@ export class SoftbankCreditCard extends SoftbankService {
     }
 
     /**
-     *
-     * @param transactionId transactionId from createTransaction request
-     * @param trackingId trackingId from createTransaction request
-     * @param processDate processDate from createTransaction request
-     * @param requestDate requestDate format YYYYMMDDHHmmss
+     * @function requestPurchase
+     * @memberof SoftbankCreditCard
+     * @param {string} transactionId transactionId from createTransaction request
+     * @param {string} trackingId trackingId from createTransaction request
+     * @param {string} processDate processDate from createTransaction request
+     * @param {string} requestDate requestDate format YYYYMMDDHHmmss
      * @returns {Promise<SoftbankTransactionResponse>}
      */
 
@@ -365,11 +387,12 @@ export class SoftbankCreditCard extends SoftbankService {
     }
 
     /**
-     *
-     * @param transactionId transactionId from createTransaction request
-     * @param trackingId trackingId from createTransaction request
-     * @param processDate processDate from createTransaction request
-     * @param requestDate requestDate format YYYYMMDDHHmmss
+     * @function refundPurchase
+     * @memberof SoftbankCreditCard
+     * @param {string} transactionId transactionId from createTransaction request
+     * @param {string} trackingId trackingId from createTransaction request
+     * @param {string} processDate processDate from createTransaction request
+     * @param {string} requestDate requestDate format YYYYMMDDHHmmss
      * @returns {Promise<SoftbankTransactionResponse>}
      */
 
