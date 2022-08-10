@@ -72,9 +72,9 @@ export class SoftbankCreditCard extends SoftbankService {
      */
 
     async createUpdateCustomer(
-        isCreate: boolean = true,
+        isCreate = true,
         customerId: string,
-        encryptedFlg: string = "1",
+        encryptedFlg: EncryptedFlag = EncryptedFlag.NONE,
         requestDate: string,
         ccNumber: string,
         ccExpiration: string,
@@ -130,10 +130,10 @@ export class SoftbankCreditCard extends SoftbankService {
      */
 
     async createUpdateCustomerWithToken(
-        isCreate: boolean = true,
+        isCreate = true,
         customerId: string,
         customerInfoReturnFlg: CustomerInfoReturnFlag = CustomerInfoReturnFlag.RETURNED,
-        encryptedFlg: string = "1",
+        encryptedFlg: EncryptedFlag = EncryptedFlag.NONE,
         requestDate: string,
         token: string,
         tokenKey: string,
