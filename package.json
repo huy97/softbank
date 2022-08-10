@@ -1,6 +1,6 @@
 {
     "name": "softbank-js",
-    "version": "0.1.2",
+    "version": "0.1.0",
     "description": "SBPS for js",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
