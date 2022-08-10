@@ -5,33 +5,63 @@ import {
     XMLFieldData,
 } from "./softbank";
 
+/**
+ * @enum {string}
+ * @property {string} NONE 0
+ * @property {string} ENCRYPTED 1
+ */
 export enum EncryptedFlag {
     NONE = "0",
     ENCRYPTED = "1",
 }
 
+/**
+ * @enum {string}
+ * @property {string} NONE 0
+ * @property {string} RETURN_ALL_MARK 1
+ * @property {string} RETURN_4_DIGITS 2
+ */
 export enum ResponseInfoType {
     NONE = "0",
     RETURN_ALL_MARK = "1",
     RETURN_4_DIGITS = "2",
 }
 
+/**
+ * @enum {string}
+ * @property {string} NONE 0
+ * @property {string} RETURNED 1
+ */
 export enum CustomerInfoReturnFlag {
     NONE = "0",
     RETURNED = "1",
 }
 
+/**
+ * @enum {string}
+ * @property {string} NONE 0
+ * @property {string} RETURNED 1
+ */
 export enum CardBrandReturnFlag {
     NONE = "0",
     RETURNED = "1",
 }
 
+/**
+ * @constant {string}
+ * @property {string} J JCB
+ * @property {string} M MasterCard
+ * @property {string} V Visa
+ * @property {string} A American Express
+ * @property {string} D Diners Club
+ * @property {string} X その他
+ */
 export const CardBrand = {
     J: "JCB",
     V: "Visa",
-    M: "Master",
-    A: "AMEX",
-    D: "Diners",
+    M: "MasterCard",
+    A: "American Express",
+    D: "Diners Club",
     X: "その他",
 };
 
@@ -44,10 +74,22 @@ interface PaymentMethodInfo {
     resrv3: XMLFieldData;
 }
 
+/**
+ * @interface
+ * @extends SoftbankResponse
+ * @property {XMLFieldData} res_pay_method_info
+ */
 export interface SoftbankCustomerResponse extends SoftbankResponse {
     res_pay_method_info: PaymentMethodInfo;
 }
 
+/**
+ * @interface
+ * @extends SoftbankResponse
+ * @property {XMLFieldData} res_sps_transaction_id
+ * @property {XMLFieldData} res_tracking_id
+ * @property {XMLFieldData} res_process_date
+ */
 export interface SoftbankTransactionResponse extends SoftbankResponse {
     res_sps_transaction_id: XMLFieldData;
     res_tracking_id: XMLFieldData;
@@ -87,7 +129,7 @@ export class SoftbankCreditCard extends SoftbankService {
      * @returns {Promise<SoftbankTransactionResponse>}
      */
 
-    async createUpdateCustomer(
+    public async createUpdateCustomer(
         isCreate = true,
         customerId: string,
         encryptedFlg: EncryptedFlag = EncryptedFlag.NONE,
@@ -133,6 +175,7 @@ export class SoftbankCreditCard extends SoftbankService {
     }
 
     /**
+     * @public
      * @function createUpdateCustomerWithToken
      * @memberof SoftbankCreditCard
      * @param {boolean} isCreate mark true: create, false: update

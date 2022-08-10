@@ -1,6 +1,6 @@
 {
     "source": {
-        "include": ["./dist/lib/", "./package.json"]
+        "include": ["./dist/lib/"]
     },
     "plugins": ["plugins/markdown"],
     "templates": {

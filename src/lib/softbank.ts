@@ -4,10 +4,21 @@ import { xml2json, json2xml } from "xml-js";
 import * as en from "../constants/errors/en";
 import * as ja from "../constants/errors/ja";
 
+/**
+ * @interface XMLFieldData
+ * @property {string} _text - XML value
+ */
 export interface XMLFieldData {
     _text: string;
 }
 
+/**
+ * @interface SoftbankResponse
+ * @property {XMLFieldData} [res_result]
+ * @property {XMLFieldData} [res_code]
+ * @property {XMLFieldData} [res_message]
+ * @property {XMLFieldData} [error_message]
+ */
 export interface SoftbankResponse {
     res_result: XMLFieldData;
     res_err_code: XMLFieldData;
@@ -20,6 +31,11 @@ const configLocale: any = {
     ja: ja,
 };
 
+/**
+ * @enum {string}
+ * @property {string} EN - en
+ * @property {string} JA - ja
+ */
 export enum Locale {
     EN = "en",
     JA = "ja",
@@ -27,11 +43,11 @@ export enum Locale {
 
 /**
  * @constructor
- * @param endpoint Softbank API endpoint
- * @param merchantId Softbank API merchant ID
- * @param serviceId Softbank API service ID
- * @param hashKey Softbank API hash key
- * @param locale Softbank API locale
+ * @param {string} endpoint Softbank API endpoint
+ * @param {string} merchantId Softbank API merchant ID
+ * @param {string} serviceId Softbank API service ID
+ * @param {string} hashKey Softbank API hash key
+ * @param {string} locale Softbank API locale
  */
 export class SoftbankService {
     public endpoint: string;
