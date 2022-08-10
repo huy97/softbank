@@ -23,6 +23,7 @@ export interface SoftbankResponse {
     res_result: XMLFieldData;
     res_err_code: XMLFieldData;
     res_date: XMLFieldData;
+    error?: any;
     error_message?: string;
 }
 
@@ -168,6 +169,7 @@ export class SoftbankService {
                 res_err_code: {
                     _text: "0000000",
                 },
+                error: error,
                 error_message: this.parseMessageError("0000000"),
             };
         }
