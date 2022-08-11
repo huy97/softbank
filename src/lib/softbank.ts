@@ -42,6 +42,11 @@ export enum Locale {
     JA = "ja",
 }
 
+export enum ResultText {
+    NG = "NG",
+    OK = "OK",
+}
+
 /**
  * @constructor
  * @param {string} endpoint Softbank API endpoint
