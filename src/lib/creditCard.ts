@@ -218,7 +218,7 @@ export class SoftbankCreditCard extends SoftbankService {
                 request_date: { _text: requestDate },
                 pay_option_manage: {
                     token: { _text: token },
-                    token_key: { _text: token },
+                    token_key: { _text: tokenKey },
                     cardbrand_return_flg: { _text: cardbrandReturnFlg },
                 },
                 sps_hashcode: {
