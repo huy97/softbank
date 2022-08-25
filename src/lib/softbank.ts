@@ -61,6 +61,8 @@ export class SoftbankService {
     public serviceId: string;
     public hashKey: string;
     public locale: Locale;
+    public debug: boolean = false;
+
     public requestId = {
         CREATE_CUSTOMER_REQUEST: "MG02-00101-101",
         UPDATE_CUSTOMER_REQUEST: "MG02-00102-101",
@@ -78,13 +80,27 @@ export class SoftbankService {
         merchantId: string,
         serviceId: string,
         hashKey: string,
-        locale: Locale = Locale.EN
+        locale: Locale = Locale.EN,
+        debug: boolean = false
     ) {
         this.endpoint = endpoint;
         this.merchantId = merchantId;
         this.hashKey = hashKey;
         this.serviceId = serviceId;
         this.locale = locale;
+        this.debug = debug;
+
+        if (this.debug) {
+            console.log(
+                "SBPS Debug init: ",
+                endpoint,
+                merchantId,
+                hashKey,
+                serviceId,
+                locale,
+                debug
+            );
+        }
     }
 
     /**
@@ -136,6 +152,9 @@ export class SoftbankService {
 
     public async request(data: any): Promise<any> {
         try {
+            if (this.debug) {
+                console.log("SBPS Debug payload: ", data);
+            }
             const result = await axios.post(
                 this.endpoint,
                 json2xml(JSON.stringify(data), { compact: true }),

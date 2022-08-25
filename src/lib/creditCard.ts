@@ -111,9 +111,10 @@ export class SoftbankCreditCard extends SoftbankService {
         merchantId: string,
         serviceId: string,
         hashKey: string,
-        locale: Locale = Locale.EN
+        locale: Locale = Locale.EN,
+        debug = false
     ) {
-        super(endpoint, merchantId, serviceId, hashKey, locale);
+        super(endpoint, merchantId, serviceId, hashKey, locale, debug);
     }
 
     /**
