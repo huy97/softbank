@@ -311,8 +311,7 @@ export class SoftbankCreditCard extends SoftbankService {
         amount: string,
         customerReturnFlg: CustomerInfoReturnFlag,
         encryptedFlg: EncryptedFlag = EncryptedFlag.NONE,
-        requestDate: string,
-        cardbrandReturnFlg: CardBrandReturnFlag = CardBrandReturnFlag.RETURNED
+        requestDate: string
     ): Promise<SoftbankTransactionResponse> {
         const payload = {
             _declaration: {
@@ -329,9 +328,6 @@ export class SoftbankCreditCard extends SoftbankService {
                 sps_cust_info_return_flg: { _text: customerReturnFlg },
                 encrypted_flg: { _text: encryptedFlg },
                 request_date: { _text: requestDate },
-                pay_method_info: {
-                    cardbrand_return_flg: { _text: cardbrandReturnFlg },
-                },
                 sps_hashcode: {
                     _text: this.generateHashCode(
                         customerId,
@@ -339,7 +335,6 @@ export class SoftbankCreditCard extends SoftbankService {
                         itemId,
                         amount,
                         customerReturnFlg,
-                        cardbrandReturnFlg,
                         encryptedFlg,
                         requestDate
                     ),
