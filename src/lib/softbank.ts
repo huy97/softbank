@@ -61,7 +61,7 @@ export class SoftbankService {
     public serviceId: string;
     public hashKey: string;
     public locale: Locale;
-    public debug: boolean = false;
+    public debug = false;
 
     public requestId = {
         CREATE_CUSTOMER_REQUEST: "MG02-00101-101",
@@ -81,7 +81,7 @@ export class SoftbankService {
         serviceId: string,
         hashKey: string,
         locale: Locale = Locale.EN,
-        debug: boolean = false
+        debug = false
     ) {
         this.endpoint = endpoint;
         this.merchantId = merchantId;
@@ -122,29 +122,29 @@ export class SoftbankService {
 
         const paymentMethodErr =
             configLocale[this.locale].paymentMethod[paymentMethodErrCode] ||
-            "Undefined";
-        let paymentTypeErr = "Undefined";
-        let paymentItemErr = "Undefined";
+            "";
+        let paymentTypeErr = "";
+        let paymentItemErr = "";
 
         if (configLocale[this.locale].paymentTypeError[paymentMethodErrCode]) {
             paymentTypeErr =
                 configLocale[this.locale].paymentTypeError[
                     paymentMethodErrCode
-                ][paymentTypeErrCode] || "Undefined";
+                ][paymentTypeErrCode] || "";
         }
 
         if (configLocale[this.locale].paymentItemError[paymentItemErrCode]) {
             paymentItemErr =
                 configLocale[this.locale].paymentItemError[
                     paymentItemErrCode
-                ] || "Undefined";
+                ] || "";
         } else if (
             configLocale[this.locale].paymentItemError[paymentMethodErrCode]
         ) {
             paymentItemErr =
                 configLocale[this.locale].paymentItemError[
                     paymentMethodErrCode
-                ][paymentItemErrCode] || "Undefined";
+                ][paymentItemErrCode] || "";
         }
 
         return `${paymentMethodErr} ${paymentTypeErr} ${paymentItemErr}`;

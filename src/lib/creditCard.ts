@@ -65,6 +65,14 @@ export const CardBrand = {
     X: "その他",
 };
 
+export interface SoftbankListItem {
+    id: string;
+    name: string;
+    quantity: number;
+    tax: number;
+    amount: number;
+}
+
 interface PaymentMethodInfo {
     cc_number: XMLFieldData;
     cc_expiration: XMLFieldData;
@@ -311,9 +319,15 @@ export class SoftbankCreditCard extends SoftbankService {
         amount: string,
         customerReturnFlg: CustomerInfoReturnFlag,
         encryptedFlg: EncryptedFlag = EncryptedFlag.NONE,
-        requestDate: string
+        requestDate: string,
+        itemName = "",
+        listItems: SoftbankListItem[] = []
     ): Promise<SoftbankTransactionResponse> {
-        const payload = {
+        let items: any[] = [];
+        for (const item of listItems) {
+            items = items.concat(item);
+        }
+        const payload: any = {
             _declaration: {
                 _attributes: { version: "1.0", encoding: "Shift_JIS" },
             },
@@ -333,14 +347,34 @@ export class SoftbankCreditCard extends SoftbankService {
                         customerId,
                         orderId,
                         itemId,
+                        itemName,
                         amount,
                         customerReturnFlg,
                         encryptedFlg,
-                        requestDate
+                        requestDate,
+                        ...items
                     ),
                 },
             },
         };
+
+        if (itemName) {
+            payload["sps-api-request"]["item_name"] = { _text: itemName };
+        }
+
+        if (listItems?.length) {
+            payload["sps-api-request"]["dtls"] = listItems.map((item) => {
+                return {
+                    dtl: {
+                        dtl_item_id: { _text: item.id },
+                        dtl_item_name: { _text: item.name },
+                        dtl_item_count: { _text: item.quantity },
+                        dtl_tax: { _text: item.tax },
+                        dtl_amount: { _text: item.amount },
+                    },
+                };
+            });
+        }
 
         return this.request(payload);
     }
