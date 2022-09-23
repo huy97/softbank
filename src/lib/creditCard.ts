@@ -359,7 +359,9 @@ export class SoftbankCreditCard extends SoftbankService {
         };
 
         if (itemName) {
-            payload["sps-api-request"]["item_name"] = { _text: itemName };
+            payload["sps-api-request"]["item_name"] = {
+                _text: Buffer.from(itemName).toString("base64"),
+            };
         }
 
         if (listItems?.length) {
