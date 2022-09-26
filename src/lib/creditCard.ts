@@ -320,13 +320,8 @@ export class SoftbankCreditCard extends SoftbankService {
         customerReturnFlg: CustomerInfoReturnFlag,
         encryptedFlg: EncryptedFlag = EncryptedFlag.NONE,
         requestDate: string,
-        itemName = "",
-        listItems: SoftbankListItem[] = []
+        itemName = ""
     ): Promise<SoftbankTransactionResponse> {
-        let items: any[] = [];
-        for (const item of listItems) {
-            items = items.concat(item);
-        }
         const payload: any = {
             _declaration: {
                 _attributes: { version: "1.0", encoding: "Shift_JIS" },
@@ -351,8 +346,7 @@ export class SoftbankCreditCard extends SoftbankService {
                         amount,
                         customerReturnFlg,
                         encryptedFlg,
-                        requestDate,
-                        ...items
+                        requestDate
                     ),
                 },
             },
@@ -362,20 +356,6 @@ export class SoftbankCreditCard extends SoftbankService {
             payload["sps-api-request"]["item_name"] = {
                 _text: Buffer.from(itemName).toString("base64"),
             };
-        }
-
-        if (listItems?.length) {
-            payload["sps-api-request"]["dtls"] = listItems.map((item) => {
-                return {
-                    dtl: {
-                        dtl_item_id: { _text: item.id },
-                        dtl_item_name: { _text: item.name },
-                        dtl_item_count: { _text: item.quantity },
-                        dtl_tax: { _text: item.tax },
-                        dtl_amount: { _text: item.amount },
-                    },
-                };
-            });
         }
 
         return this.request(payload);
