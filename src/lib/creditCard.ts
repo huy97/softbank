@@ -1,4 +1,4 @@
-import { Iconv } from "iconv";
+// import { Iconv } from "iconv";
 import {
     Locale,
     SoftbankResponse,
@@ -323,12 +323,12 @@ export class SoftbankCreditCard extends SoftbankService {
         requestDate: string,
         itemName = ""
     ): Promise<SoftbankTransactionResponse> {
-        const iconv = Iconv("UTF-8", "Shift_JIS");
+        // const iconv = Iconv("UTF-8", "Shift_JIS");
         let itemNameBase64 = Buffer.from(itemName).toString("base64");
 
-        if (this.locale === Locale.JA) {
-            itemNameBase64 = iconv.convert(itemName).toString("base64");
-        }
+        // if (this.locale === Locale.JA) {
+        //     itemNameBase64 = iconv.convert(itemName).toString("base64");
+        // }
 
         const payload: any = {
             _declaration: {

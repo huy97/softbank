@@ -1,6 +1,6 @@
 {
     "name": "softbankjs",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "description": "SBPS for js",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -16,7 +16,6 @@
     },
     "dependencies": {
         "axios": "^0.27.2",
-        "iconv": "^3.0.1",
         "sha1": "^1.1.1",
         "xml-js": "^1.6.11"
     },
