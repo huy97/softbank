@@ -1,3 +1,4 @@
+import { Iconv } from "iconv";
 import {
     Locale,
     SoftbankResponse,
@@ -322,6 +323,13 @@ export class SoftbankCreditCard extends SoftbankService {
         requestDate: string,
         itemName = ""
     ): Promise<SoftbankTransactionResponse> {
+        const iconv = Iconv("UTF-8", "Shift_JIS");
+        let itemNameBase64 = Buffer.from(itemName).toString("base64");
+
+        if (this.locale === Locale.JA) {
+            itemNameBase64 = iconv.convert(itemName).toString("base64");
+        }
+
         const payload: any = {
             _declaration: {
                 _attributes: { version: "1.0", encoding: "Shift_JIS" },
@@ -354,7 +362,7 @@ export class SoftbankCreditCard extends SoftbankService {
 
         if (itemName) {
             payload["sps-api-request"]["item_name"] = {
-                _text: Buffer.from(itemName).toString("base64"),
+                _text: itemNameBase64,
             };
         }
 

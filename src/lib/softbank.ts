@@ -1,8 +1,10 @@
-import { sha1 } from "./../utils/index";
 import axios from "axios";
 import { xml2json, json2xml } from "xml-js";
 import * as en from "../constants/errors/en";
 import * as ja from "../constants/errors/ja";
+import { Iconv } from "iconv";
+
+const sha1 = require("sha1");
 
 /**
  * @interface XMLFieldData
@@ -110,6 +112,16 @@ export class SoftbankService {
      * @returns string
      */
     public generateHashCode(...args: string[]): string {
+        if (this.locale === Locale.JA) {
+            const iconv = new Iconv("UTF-8", "Shift_JIS");
+            return sha1(
+                iconv.convert(
+                    `${this.merchantId}${this.serviceId}${args.join("")}${
+                        this.hashKey
+                    }`
+                )
+            );
+        }
         return sha1(
             `${this.merchantId}${this.serviceId}${args.join("")}${this.hashKey}`
         );
@@ -121,8 +133,7 @@ export class SoftbankService {
         const paymentItemErrCode = errorCode.slice(5, 9);
 
         const paymentMethodErr =
-            configLocale[this.locale].paymentMethod[paymentMethodErrCode] ||
-            "";
+            configLocale[this.locale].paymentMethod[paymentMethodErrCode] || "";
         let paymentTypeErr = "";
         let paymentItemErr = "";
 
