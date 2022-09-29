@@ -1,11 +1,10 @@
-// import { Iconv } from "iconv";
 import {
     Locale,
     SoftbankResponse,
     SoftbankService,
     XMLFieldData,
 } from "./softbank";
-
+import * as Encoding from "encoding-japanese";
 /**
  * @enum {string}
  * @property {string} NONE 0
@@ -323,12 +322,17 @@ export class SoftbankCreditCard extends SoftbankService {
         requestDate: string,
         itemName = ""
     ): Promise<SoftbankTransactionResponse> {
-        // const iconv = Iconv("UTF-8", "Shift_JIS");
+        const unicodeArray = Encoding.stringToCode(itemName);
         let itemNameBase64 = Buffer.from(itemName).toString("base64");
 
-        // if (this.locale === Locale.JA) {
-        //     itemNameBase64 = iconv.convert(itemName).toString("base64");
-        // }
+        if (this.locale === Locale.JA) {
+            const uCode = Encoding.convert(unicodeArray, {
+                to: "SJIS",
+                from: "UNICODE",
+            });
+
+            itemNameBase64 = Encoding.base64Encode(uCode);
+        }
 
         const payload: any = {
             _declaration: {

@@ -17,12 +17,12 @@ const ins = new SoftbankCreditCard(
 const main = async () => {
     const a = await ins.createTransaction(
         "Merchant_TestUser_999999",
-        "1b8759bcaa5ae048c31d46fa0171d49611",
+        "1b8759bcaa20220929225129fa0171d49611",
         "1",
         "10",
         CustomerInfoReturnFlag.RETURNED,
         EncryptedFlag.NONE,
-        "20220929212031",
+        "20220929225129",
         "年払い初期費用10万円プラン"
     );
 

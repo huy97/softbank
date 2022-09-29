@@ -2,7 +2,7 @@ import axios from "axios";
 import { xml2json, json2xml } from "xml-js";
 import * as en from "../constants/errors/en";
 import * as ja from "../constants/errors/ja";
-// import { Iconv } from "iconv";
+import * as Encoding from "encoding-japanese";
 
 const sha1 = require("sha1");
 
@@ -113,11 +113,16 @@ export class SoftbankService {
      */
     public generateHashCode(...args: string[]): string {
         if (this.locale === Locale.JA) {
-            // const iconv = new Iconv("UTF-8", "Shift_JIS");
-            return sha1(
+            const unicodeArray = Encoding.stringToCode(
                 `${this.merchantId}${this.serviceId}${args.join("")}${
                     this.hashKey
                 }`
+            );
+            return sha1(
+                Encoding.convert(unicodeArray, {
+                    to: "SJIS",
+                    from: "UNICODE",
+                })
             );
         }
         return sha1(
